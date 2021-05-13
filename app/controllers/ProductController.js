@@ -1,9 +1,9 @@
-const clientService = require("../services/ClientService");
+const productService = require("../services/ProductService");
 const utils = require("../utils/utils");
 
-module.exports.getClients = function (req, res) {
+module.exports.getProducts = function (req, res) {
     
-    return clientService.getClients()
+    return productService.getProducts()
     .then((data) => {
         utils.successResponse(res, data);
     }).catch((error) => {
@@ -12,9 +12,9 @@ module.exports.getClients = function (req, res) {
     
 };
 
-module.exports.getClientById = function (req, res) {
+module.exports.getProductById = function (req, res) {
     
-    return clientService.getClientById(req.params)
+    return productService.getProductById(req.params)
     .then((data) => {
         utils.successResponse(res, data);
     }).catch((error) => {
@@ -23,9 +23,9 @@ module.exports.getClientById = function (req, res) {
     
 };
 
-module.exports.addClient = function (req, res) {
-    
-    return clientService.addClient(req.body)
+module.exports.addProduct = function (req, res) {
+
+    return productService.addProduct(req.body)
     .then((data) => {
         utils.successResponse(res, data);
     }).catch((error) => {
@@ -34,9 +34,9 @@ module.exports.addClient = function (req, res) {
     
 };
 
-module.exports.updateClient = function (req, res) {
-    
-    return clientService.updateClient(req.body)
+module.exports.updateProduct = function (req, res) {
+
+    return productService.updateProduct(req.body)
     .then((data) => {
         utils.successResponse(res, data);
     }).catch((error) => {
@@ -45,9 +45,9 @@ module.exports.updateClient = function (req, res) {
     
 };
 
-module.exports.deleteClient = function (req, res) {
+module.exports.deleteProduct = function (req, res) {
     
-    return clientService.deleteClient(req.body)
+    return productService.deleteProduct(req.body)
     .then((data) => {
         utils.successResponse(res, data);
     }).catch((error) => {

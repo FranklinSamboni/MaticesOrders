@@ -13,12 +13,7 @@ module.exports.savePhoneCode = function (body) {
     };
     return phoneCodeRepository.savePhoneCode(phoneCode);
   } else {
-    return new Promise((resolve, reject) => {
-      reject({
-        statusCode: 400,
-        message: "'code' field is required",
-      });
-    });
+    return Promise.reject({statusCode: 400, message: "'code' field is required"});
   }
 };
 
@@ -30,11 +25,6 @@ module.exports.deletePhoneCode = function (body) {
     };
     return phoneCodeRepository.deletePhoneCode(phoneCode);
   } else {
-    return new Promise((resolve, reject) => {
-      reject({
-        statusCode: 400,
-        message: "'code' field is required",
-      });
-    });
+    return Promise.reject({statusCode: 400, message: "'code' field is required"});
   }
 };

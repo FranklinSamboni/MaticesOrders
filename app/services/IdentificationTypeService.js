@@ -19,12 +19,7 @@ module.exports.deleteIdentificationType = function (body) {
         };
         return identificationTypeRepository.deleteIdentificationType(idType);
     } else {
-        return new Promise((resolve, reject) => {
-            reject({
-                statusCode: 400,
-                message: "'typeId' field is required",
-            });
-        });
+        return Promise.reject({statusCode: 400, message: "'typeId' field is required"});
     }
 };
 

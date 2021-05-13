@@ -1,21 +1,20 @@
 
-const clientRepository = require("../repositories/ClientRepository");
-const identificationTypeRepository = require("../repositories/IdentificationTypeRepository");
-const phoneCodeRepository = require("../repositories/PhoneCodeRepository");
+const orderRepository = require("../repositories/OrderRepository");
 
-module.exports.getClients = function () {
-    return clientRepository.getAll();
+module.exports.getOrders = function () {
+    return orderRepository.getAll();
 };
 
-module.exports.getClientById = function (params) {
+module.exports.getOrderById = function (params) {
     let id = params.id;
     if (id) {
-        return clientRepository.getById(id);
+        return orderRepository.getById(id);
     } else {
         return Promise.reject({ statusCode: 400, message: "'id' field is required" });
     }
 };
 
+/*
 module.exports.addClient = function (body) {
     return isValidClient(body)
         .then(client => {
@@ -93,4 +92,4 @@ async function isValidClient(body) {
     client.address = body.address ? body.address : "";
 
     return Promise.resolve(client);
-}
+}*/

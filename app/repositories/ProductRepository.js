@@ -5,24 +5,22 @@ module.exports.getAll = function () {
     return Product.find({});
 }
 
-module.exports.getById = function(id) {
+module.exports.getById = function (id) {
     return Product.findOne({ _id: new ObjectId(id) });
 }
 
 module.exports.updateProduct = function (update) {
     var query = { _id: new ObjectId(update._id) };
     return Product.findOneAndUpdate(query, update).then(savedProduct => {
-        return new Promise((resolve, reject) => { 
-            if (!savedProduct) {
-                reject({ statusCode: 400, message: "Product not found" }); 
-            } else {
-                resolve(savedProduct);
-            }
-        });
+        if (!savedProduct) {
+            Promise.reject({ statusCode: 400, message: "Product not found" });
+        } else {
+            return savedProduct;
+        }
     });
 }
 
-module.exports.saveProduct = function (product) {
+module.exports.createProduct = function (product) {
     return Product.create(product);
 }
 

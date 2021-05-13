@@ -13,12 +13,7 @@ module.exports.saveSize = function (body) {
     };
     return sizeRepository.saveSize(newSize);
   } else {
-    return new Promise((resolve, reject) => {
-      reject({
-        statusCode: 400,
-        message: "'name' field is required",
-      });
-    });
+    return Promise.reject({statusCode: 400, message: "'name' field is required"});
   }
 };
 
@@ -30,11 +25,6 @@ module.exports.deleteSize = function (body) {
     };
     return sizeRepository.deleteSize(newSize);
   } else {
-    return new Promise((resolve, reject) => {
-      reject({
-        statusCode: 400,
-        message: "'name' field is required",
-      });
-    });
+    return Promise.reject({statusCode: 400, message: "'name' field is required"});
   }
 };

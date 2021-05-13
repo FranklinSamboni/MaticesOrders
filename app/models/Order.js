@@ -1,15 +1,17 @@
 
 var mongoose = require('mongoose');
-const Client = require('./client');
 var Schema = mongoose.Schema;
 
 var Order = new Schema({
     status: String,
-    dateCreated: BigInt,
-    dateSent: BigInt,
-    client: Client,
-    products: String,
-    shipper: String
+    dateCreated: Number,
+    dateSent: Number,
+    client: { type: mongoose.Schema.Types.ObjectId, ref: 'Client', autopopulate: true },
+    products: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Product', autopopulate: true }],
+    shipper: String,
+    shippingAddress: String
 });
+
+Order.plugin(require('mongoose-autopopulate'));
 
 module.exports = mongoose.model('Order', Order);

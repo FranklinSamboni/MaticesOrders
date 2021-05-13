@@ -3,58 +3,57 @@ const productRepository = require("../repositories/ProductRepository");
 const sizeRepository = require("../repositories/SizeRepository");
 const colorRepository = require("../repositories/ColorRepository");
 
-/*
-module.exports.getClients = function () {
-    return clientRepository.getAll();
+module.exports.getProducts = function () {
+    return productRepository.getAll();
 };
 
-module.exports.getClientById = function (params) {
+module.exports.getProductById = function (params) {
     let id = params.id;
     if (id) {
-        return clientRepository.getById(id);
+        return productRepository.getById(id);
     } else {
-        return new Promise((resolve, reject) => {
-            reject({
-                statusCode: 400,
-                message: "'id' field is required",
-            });
-        });
+        return Promise.reject({ statusCode: 400, message: "'id' field is required" });
     }
-
 };
 
-module.exports.saveClient = function (body) {
+module.exports.addProduct = function (body) {
+    return isValidProduct(body)
+        .then(product => {
+            return productRepository.createProduct(product);
+        });
+};
 
-    return isValidClient(body)
-        .then(client => {
+module.exports.updateProduct = function (body) {
+
+    return isValidProduct(body)
+        .then(product => {
             let id = body._id;
-            if (id) {
+            if (!id) {
+                return Promise.reject({ statusCode: 400, message: "'_id' field is required" });
+            } else {
                 var update = {};
                 update._id = id;
-                if (client.name) update.name = client.name;
-                if (client.lastName) update.lastName = client.lastName;
-                if (client.identificationType) update.identificationType = client.identificationType;
-                if (client.identificationNumber) update.identificationNumber = client.identificationNumber;
-                if (client.phoneCode) update.phoneCode = client.phoneCode;
-                if (client.phone) update.phone = client.phone;
-                if (client.city) update.city = client.city;
-                if (client.address) update.address = client.address;
 
-                return clientRepository.updateClient(update);
-            } else {
-                return clientRepository.saveClient(client);
+                if (product.name) update.name = product.name;
+                if (product.size) update.size = product.size;
+                if (product.color) update.color = product.color;
+                if (product.stamp) update.stamp = product.stamp;
+                if (product.description) update.description = product.description;
+                if (product.isStampCutted) update.isStampCutted = product.isStampCutted;
+                if (product.price) update.price = product.price;
+
+                return productRepository.updateProduct(update);
             }
         });
-
 };
 
-module.exports.deleteClient = function (body) {
+module.exports.deleteProduct = function (body) {
     let id = body._id;
     if (id) {
-        const client = {
+        const product = {
             _id: body._id
         };
-        return clientRepository.deleteClient(client);
+        return productRepository.deleteProduct(product);
     } else {
         return new Promise((resolve, reject) => {
             reject({
@@ -65,55 +64,45 @@ module.exports.deleteClient = function (body) {
     }
 };
 
-function isValidClient(body) {
-    return new Promise((resolve, reject) => {
-        const client = {};
 
-        if (!body.name) {
-            reject({ statusCode: 400, message: "'name' field is required" });
-        } else if (!body.phone) {
-            reject({ statusCode: 400, message: "'phone' field is required" });
+async function isValidProduct(body) {
+
+    const product = {};
+
+    if (!body.name) {
+        return Promise.reject({ statusCode: 400, message: "'name' field is required" });
+    }
+    if (!body.stamp) {
+        return Promise.reject({ statusCode: 400, message: "'stamp' field is required" });
+    }
+    if (body.isStampCutted && typeof body.isStampCutted !== "boolean") {
+        return Promise.reject({ statusCode: 400, message: "'isStampCutted' cannot be read, be sure is boolean type" });
+    }
+    if (body.price && typeof body.price !== "number") {
+        return Promise.reject({ statusCode: 400, message: "'number' cannot be read, be sure is number type" });
+    }
+    if (body.size) {
+        var sizeFound = await sizeRepository.getByName(body.size);
+        if (!sizeFound) {
+            return Promise.reject({ statusCode: 400, message: "the 'size' provided was not found" });
         } else {
-
-            client.name = body.name;
-            client.lastName = body.lastName ? body.lastName : "";
-            client.identificationNumber = body.identificationNumber ? body.identificationNumber : "";
-            client.phone = body.phone ? body.phone : "";
-            client.city = body.city ? body.city : "";
-            client.address = body.address ? body.address : "";
-
-            if (body.identificationType || body.phoneCode) {
-
-                var promises = [];
-                if (body.identificationType) promises.push(identificationTypeRepository.getById(body.identificationType));
-                if (body.phoneCode) promises.push(phoneCodeRepository.getByCode(body.phoneCode));
-
-                Promise.all(promises).then(values => {
-
-                    var idTypeFound = body.identificationType ? values[0] : null;
-                    var phoneCodeFound = body.identificationType && body.phoneCode ? values[1] : body.phoneCode ? values[0] : null;
-
-                    if (body.identificationType && !idTypeFound) {
-                        reject({ statusCode: 400, message: "'identificationType' not found" });
-                        return;
-                    } else {
-                        client.identificationType = idTypeFound;
-                    }
-                    
-                    if (body.phoneCode && !phoneCodeFound) {
-                        reject({ statusCode: 400, message: "'phoneCode' not found" });
-                        return;
-                    } else {
-                        client.phoneCode = phoneCodeFound;
-                    }
-                    resolve(client);
-                }).catch(errors => {
-                    reject({ statusCode: 400, message: errors });
-                });
-            } else {
-                resolve(client);
-            }
-
+            product.size = sizeFound;
         }
-    });
-}*/
+    }
+    if (body.color) {
+        var colorFound = await colorRepository.getByName(body.color);
+        if (!colorFound) {
+            return Promise.reject({ statusCode: 400, message: "the 'color' provided was not found" });
+        } else {
+            product.color = colorFound;
+        }
+    }
+
+    product.name = body.name;
+    product.stamp = body.stamp;
+    product.description = body.description ? body.description : "";
+    product.isStampCutted = body.isStampCutted ? body.isStampCutted : false;
+    product.price = body.price ? body.price : null;
+
+    return Promise.resolve(product);
+}

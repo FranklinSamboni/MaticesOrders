@@ -13,12 +13,7 @@ module.exports.saveOrderStatus = function (body) {
     };
     return orderStatusRepository.saveOrderStatus(orderStatus);
   } else {
-    return new Promise((resolve, reject) => {
-      reject({
-        statusCode: 400,
-        message: "'name' field is required",
-      });
-    });
+    return Promise.reject({statusCode: 400, message: "'name' field is required"});
   }
 };
 
@@ -30,11 +25,6 @@ module.exports.deleteOrderStatus = function (body) {
     };
     return orderStatusRepository.deleteOrderStatus(orderStatus);
   } else {
-    return new Promise((resolve, reject) => {
-      reject({
-        statusCode: 400,
-        message: "'name' field is required",
-      });
-    });
+    return Promise.reject({statusCode: 400, message: "'name' field is required"});
   }
 };

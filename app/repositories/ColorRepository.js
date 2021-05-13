@@ -4,6 +4,10 @@ module.exports.getAll = function(){
     return Color.find({});
 }
 
+module.exports.getByName = function(name) {
+    return Color.findOne({ name: name });
+}
+
 module.exports.saveColor = function (color) {
     var query = { name: color.name };
     var update = { name : color.name };

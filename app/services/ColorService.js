@@ -13,12 +13,7 @@ module.exports.saveColor = function (body) {
     };
     return colorRepository.saveColor(color);
   } else {
-    return new Promise((resolve, reject) => {
-      reject({
-        statusCode: 400,
-        message: "'name' field is required",
-      });
-    });
+    return Promise.reject({statusCode: 400, message: "'name' field is required"});
   }
 };
 
@@ -30,11 +25,6 @@ module.exports.deleteColor = function (body) {
     };
     return colorRepository.deleteColor(color);
   } else {
-    return new Promise((resolve, reject) => {
-      reject({
-        statusCode: 400,
-        message: "'name' field is required",
-      });
-    });
+    return Promise.reject({statusCode: 400, message: "'name' field is required"});
   }
 };

@@ -1,15 +1,14 @@
 const express = require('express');
 const router = express.Router();
 
-const orderController = require('./controllers/OrderController');
 const colorController = require('./controllers/ColorController');
 const sizeController = require('./controllers/SizeController');
 const phoneCodeController = require('./controllers/PhoneCodeController');
 const identificationTypeController = require('./controllers/IdentificationTypeController');
 const orderStatusController = require('./controllers/OrderStatusController');
 const clientController = require('./controllers/ClientController');
-
-router.get('/orders', orderController.getOrders);
+const productController = require('./controllers/ProductController');
+const orderController = require('./controllers/OrderController');
 
 router.get('/color', colorController.getAvailableColors);
 router.post('/color', colorController.saveColor);
@@ -33,7 +32,20 @@ router.delete('/orderStatus', orderStatusController.deleteOrderStatus);
 
 router.get('/client', clientController.getClients);
 router.get('/client/:id', clientController.getClientById);
-router.post('/client', clientController.saveClient);
+router.post('/client', clientController.addClient);
+router.put('/client/', clientController.updateClient);
 router.delete('/client', clientController.deleteClient);
+
+router.get('/product', productController.getProducts);
+router.get('/product/:id', productController.getProductById);
+router.post('/product', productController.addProduct);
+router.put('/product', productController.updateProduct);
+router.delete('/product', productController.deleteProduct);
+
+router.get('/order', orderController.getOrders);
+router.get('/order/:id', orderController.getOrderById);
+/*router.post('/product', orderController.addProduct);
+router.put('/product', orderController.updateProduct);
+router.delete('/product', orderController.deleteProduct);*/
 
 module.exports = router;

@@ -1,17 +1,16 @@
 
 var mongoose = require('mongoose');
-const Color = require('./Color');
-const Size = require('./Size');
 var Schema = mongoose.Schema;
 
 var Product = new Schema({
-    productName: String,
-    size: Size,
-    color: Color,
+    name: String,
+    size: { type: mongoose.Schema.Types.ObjectId, ref: 'Size', autopopulate: true },
+    color: { type: mongoose.Schema.Types.ObjectId, ref: 'Color', autopopulate: true },
     stamp: String,
     description: String,
     isStampCutted: Boolean,
     price: Number
 });
 
+Product.plugin(require('mongoose-autopopulate'));
 module.exports = mongoose.model('Product', Product);

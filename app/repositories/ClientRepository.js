@@ -12,17 +12,15 @@ module.exports.getById = function(id) {
 module.exports.updateClient = function (update) {
     var query = { _id: new ObjectId(update._id) };
     return Client.findOneAndUpdate(query, update).then(savedClient => {
-        return new Promise((resolve, reject) => { 
-            if (!savedClient) {
-                reject({ statusCode: 400, message: "Client not found" }); 
-            } else {
-                resolve(savedClient);
-            }
-        });
+        if (!savedClient) {
+            Promise.reject({ statusCode: 400, message: "Client not found" }); 
+        } else {
+            return savedClient;
+        }
     });
 }
 
-module.exports.saveClient = function (client) {
+module.exports.createClient = function (client) {
     return Client.create(client);
 }
 

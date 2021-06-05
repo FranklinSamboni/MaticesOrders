@@ -17,7 +17,7 @@ module.exports.getClientById = function (params) {
 };
 
 module.exports.addClient = function (body) {
-    return isValidClient(body)
+    return module.exports.isValidClient(body)
         .then(client => {
             return clientRepository.createClient(client);
         });
@@ -25,11 +25,11 @@ module.exports.addClient = function (body) {
 
 module.exports.updateClient = function (body) {
 
-    return isValidClient(body)
+    return module.exports.isValidClient(body)
         .then(client => {
             let id = body._id;
             if (!id) {
-                return Promise.reject({ statusCode: 400, message: "'_id' field is required"});
+                return Promise.reject({ statusCode: 400, message: "'_id' field of client is required"});
             } else {
                 var update = {};
                 update._id = id;
@@ -58,15 +58,15 @@ module.exports.deleteClient = function (body) {
     }
 };
 
-async function isValidClient(body) {
+module.exports.isValidClient = async function isValidClient(body) {
 
     const client = {};
 
     if (!body.name) {
-        return Promise.reject({ statusCode: 400, message: "'name' field is required" });
+        return Promise.reject({ statusCode: 400, message: "'name' field of client is required" });
     }
     if (!body.phone) {
-        return Promise.reject({ statusCode: 400, message: "'phone' field is required" });
+        return Promise.reject({ statusCode: 400, message: "'phone' field of client is required" });
     }
     if (body.identificationType) {
         var idTypeFound = await identificationTypeRepository.getById(body.identificationType);
@@ -93,4 +93,4 @@ async function isValidClient(body) {
     client.address = body.address ? body.address : "";
 
     return Promise.resolve(client);
-}
+};

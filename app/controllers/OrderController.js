@@ -22,3 +22,58 @@ module.exports.getOrderById = function (req, res) {
     });
     
 };
+
+module.exports.deleteOrder = function (req, res) {
+    
+    return orderService.deleteOrder(req.body)
+    .then((data) => {
+        utils.successResponse(res, data);
+    }).catch((error) => {
+        utils.errorResponse(res, error);
+    });
+    
+};
+
+module.exports.addOrder = function (req, res) {
+    
+    return orderService.addOrder(req.body)
+    .then((data) => {
+        utils.successResponse(res, data);
+    }).catch((error) => {
+        utils.errorResponse(res, error);
+    });
+    
+};
+
+module.exports.updateOrder = function (req, res) {
+    
+    return orderService.updateOrder(req.body)
+    .then((data) => {
+        utils.successResponse(res, data);
+    }).catch((error) => {
+        utils.errorResponse(res, error);
+    });
+    
+};
+
+module.exports.addProductToOrder = function (req, res) {
+    
+    return orderService.addProductToOrder(req.body)
+    .then((data) => {
+        utils.successResponse(res, data);
+    }).catch((error) => {
+        utils.errorResponse(res, error);
+    });
+    
+};
+
+module.exports.deleteProductFromOrder = function (req, res) {
+    
+    return orderService.deleteProductFromOrder(req.body)
+    .then((data) => {
+        utils.successResponse(res, data);
+    }).catch((error) => {
+        utils.errorResponse(res, error);
+    });
+    
+};

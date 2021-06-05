@@ -39,9 +39,11 @@ module.exports.updateProduct = function (body) {
                 if (product.color) update.color = product.color;
                 if (product.stamp) update.stamp = product.stamp;
                 if (product.description) update.description = product.description;
-                if (product.isStampCutted) update.isStampCutted = product.isStampCutted;
                 if (product.price) update.price = product.price;
 
+                if (typeof product.isStampCutted === "boolean") {
+                    update.isStampCutted = product.isStampCutted;
+                }
                 return productRepository.updateProduct(update);
             }
         });
@@ -70,10 +72,10 @@ async function isValidProduct(body) {
     const product = {};
 
     if (!body.name) {
-        return Promise.reject({ statusCode: 400, message: "'name' field is required" });
+        return Promise.reject({ statusCode: 400, message: "'name' field of product is required" });
     }
     if (!body.stamp) {
-        return Promise.reject({ statusCode: 400, message: "'stamp' field is required" });
+        return Promise.reject({ statusCode: 400, message: "'stamp' field of product is required" });
     }
     if (body.isStampCutted && typeof body.isStampCutted !== "boolean") {
         return Promise.reject({ statusCode: 400, message: "'isStampCutted' cannot be read, be sure is boolean type" });
@@ -86,7 +88,7 @@ async function isValidProduct(body) {
         if (!sizeFound) {
             return Promise.reject({ statusCode: 400, message: "the 'size' provided was not found" });
         } else {
-            product.size = sizeFound;
+            product.size = sizeFound._id;
         }
     }
     if (body.color) {
@@ -94,15 +96,18 @@ async function isValidProduct(body) {
         if (!colorFound) {
             return Promise.reject({ statusCode: 400, message: "the 'color' provided was not found" });
         } else {
-            product.color = colorFound;
+            product.color = colorFound._id;
         }
     }
 
     product.name = body.name;
     product.stamp = body.stamp;
     product.description = body.description ? body.description : "";
-    product.isStampCutted = body.isStampCutted ? body.isStampCutted : false;
     product.price = body.price ? body.price : null;
 
+    if (typeof body.isStampCutted === "boolean") {
+        product.isStampCutted = body.isStampCutted;
+    }
+    
     return Promise.resolve(product);
-}
+};

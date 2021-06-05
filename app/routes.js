@@ -44,8 +44,13 @@ router.delete('/product', productController.deleteProduct);
 
 router.get('/order', orderController.getOrders);
 router.get('/order/:id', orderController.getOrderById);
-/*router.post('/product', orderController.addProduct);
-router.put('/product', orderController.updateProduct);
+router.post('/order', orderController.addOrder);
+router.put('/order', orderController.updateOrder);
+router.delete('/order', orderController.deleteOrder);
+router.post('/order/addproduct', orderController.addProductToOrder);
+router.post('/order/removeproduct', orderController.deleteProductFromOrder);
+
+/*router.put('/product', orderController.updateProduct);
 router.delete('/product', orderController.deleteProduct);*/
 
 module.exports = router;

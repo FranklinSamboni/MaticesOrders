@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var Order = new Schema({
-    status: String,
+    status: { type: mongoose.Schema.Types.ObjectId, ref: 'OrderStatus', autopopulate: true },
     dateCreated: Number,
     dateSent: Number,
     client: { type: mongoose.Schema.Types.ObjectId, ref: 'Client', autopopulate: true },

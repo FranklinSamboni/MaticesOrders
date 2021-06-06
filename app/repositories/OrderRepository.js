@@ -2,7 +2,7 @@ const { ObjectId } = require("bson");
 const Order = require("../models/Order");
 
 module.exports.getAll = function () {
-    return Order.find({});
+    return Order.find({}).sort({ dateCreated: 'desc' });;
 };
 
 module.exports.getById = function (id) {

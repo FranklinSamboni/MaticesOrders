@@ -9,6 +9,7 @@ const orderStatusController = require('./controllers/OrderStatusController');
 const clientController = require('./controllers/ClientController');
 const productController = require('./controllers/ProductController');
 const orderController = require('./controllers/OrderController');
+const stampController = require('./controllers/StampController');
 
 router.get('/color', colorController.getAvailableColors);
 router.post('/color', colorController.saveColor);
@@ -50,7 +51,8 @@ router.delete('/order', orderController.deleteOrder);
 router.post('/order/addproduct', orderController.addProductToOrder);
 router.post('/order/removeproduct', orderController.deleteProductFromOrder);
 
-/*router.put('/product', orderController.updateProduct);
-router.delete('/product', orderController.deleteProduct);*/
+router.get('/stamp', stampController.getAll);
+router.post('/stamp', stampController.saveStamp);
+router.delete('/stamp', stampController.deleteStamp);
 
 module.exports = router;

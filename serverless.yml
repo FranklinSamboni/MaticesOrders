@@ -1,0 +1,25 @@
+service: matices-orders-backend
+
+frameworkVersion: '2'
+
+provider:
+  name: aws
+  region: us-east-1
+  timeout: 60
+  lambdaHashingVersion: '20201221'
+
+package:
+  individually: true
+  excludeDevDependencies: true
+
+functions:
+  orders:
+    handler: app.handler
+    runtime: nodejs12.x
+    events:
+      - http:
+          path: matices/api/{proxy+}
+          method: ANY
+
+plugins:
+  - serverless-offline

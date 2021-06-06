@@ -46,3 +46,7 @@ app.use('/matices/api/v1', route);
 server.listen(port, function () {
   console.log("Listening " + ':' + port);
 });
+
+// Serverless
+const serverless = require('serverless-http');
+module.exports.handler = serverless(app);

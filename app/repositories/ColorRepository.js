@@ -1,7 +1,7 @@
 const Color = require("../models/Color");
 
 module.exports.getAll = function(){
-    return Color.find({});
+    return Color.find({}).sort({ name: 'asc' });
 };
 
 module.exports.getByName = function(name) {

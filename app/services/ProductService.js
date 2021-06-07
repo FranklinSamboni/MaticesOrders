@@ -2,6 +2,7 @@
 const productRepository = require("../repositories/ProductRepository");
 const sizeRepository = require("../repositories/SizeRepository");
 const colorRepository = require("../repositories/ColorRepository");
+const stampRepository = require("../repositories/StampRepository");
 
 module.exports.getProducts = function () {
     return productRepository.getAll();
@@ -74,8 +75,8 @@ async function isValidProduct(body) {
     if (!body.name) {
         return Promise.reject({ statusCode: 400, message: "'name' field of product is required" });
     }
-    if (!body.stamp) {
-        return Promise.reject({ statusCode: 400, message: "'stamp' field of product is required" });
+    if (body.stampRef && typeof body.stampRef !== "string") {
+        return Promise.reject({ statusCode: 400, message: "'stampRef' cannot be read, be sure is string type" });
     }
     if (body.isStampCutted && typeof body.isStampCutted !== "boolean") {
         return Promise.reject({ statusCode: 400, message: "'isStampCutted' cannot be read, be sure is boolean type" });
@@ -100,14 +101,22 @@ async function isValidProduct(body) {
         }
     }
 
-    product.name = body.name;
-    product.stamp = body.stamp;
-    product.description = body.description ? body.description : "";
-    product.price = body.price ? body.price : null;
+    if (body.stampRef) {
+        var stampRefFound = await stampRepository.getByName(body.stampRef);
+        if (!stampRefFound) {
+            return Promise.reject({ statusCode: 400, message: "the 'stampRef' provided was not found" });
+        } else {
+            product.stampRef = stampRefFound._id;
+        }
+    }
 
     if (typeof body.isStampCutted === "boolean") {
         product.isStampCutted = body.isStampCutted;
     }
     
+    product.name = body.name;
+    product.description = body.description ? body.description : "";
+    product.price = body.price ? body.price : null;
+
     return Promise.resolve(product);
 };

@@ -10,9 +10,9 @@ module.exports.getAll = function (req, res) {
     });
 };
 
-module.exports.saveStamp = function (req, res) {
+module.exports.createStamp = function (req, res) {
     
-    return stampService.saveStamp(req.body)
+    return stampService.createStamp(req.body)
     .then((data) => {
         utils.successResponse(res, data);
     }).catch((error) => {
@@ -20,6 +20,18 @@ module.exports.saveStamp = function (req, res) {
     });
     
 };
+
+module.exports.updateStamp = function (req, res) {
+    
+    return stampService.updateStamp(req.body)
+    .then((data) => {
+        utils.successResponse(res, data);
+    }).catch((error) => {
+        utils.errorResponse(res, error);
+    });
+    
+};
+
 
 module.exports.deleteStamp = function (req, res) {
     

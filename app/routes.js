@@ -52,7 +52,8 @@ router.post('/order/addproduct', orderController.addProductToOrder);
 router.post('/order/removeproduct', orderController.deleteProductFromOrder);
 
 router.get('/stamp', stampController.getAll);
-router.post('/stamp', stampController.saveStamp);
+router.post('/stamp', stampController.createStamp);
+router.put('/stamp', stampController.updateStamp);
 router.delete('/stamp', stampController.deleteStamp);
 
 module.exports = router;

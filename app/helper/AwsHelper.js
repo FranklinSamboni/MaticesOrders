@@ -17,7 +17,8 @@ module.exports.S3SaveImage = async function (imageName, imageBase64) {
         return Promise.reject({ statusCode: 400, message: "'image' field format is not supporte, be sure is just base64 image" })
     }
 
-    const fileName = `${folder}${imageName}.${fileType.ext}`;
+    const date = Date.now();
+    const fileName = `${folder}${imageName}_${date}.${fileType.ext}`;
 
     const paramsS3Bucket = {
         Bucket: bucketName,

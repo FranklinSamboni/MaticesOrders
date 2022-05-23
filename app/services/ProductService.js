@@ -38,7 +38,7 @@ module.exports.updateProduct = function (body) {
                 if (product.name) update.name = product.name;
                 if (product.size) update.size = product.size;
                 if (product.color) update.color = product.color;
-                if (product.stamp) update.stamp = product.stamp;
+                if (product.stampRef) update.stampRef = product.stampRef;
                 if (product.description) update.description = product.description;
                 if (product.price) update.price = product.price;
 
